@@ -32,7 +32,12 @@ include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES})
 # Uncomment this line to include all test automatically
 # file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
 # Otherwise add them below
-set(TEST_SRC_FILES ${SRC_FILES} ${PROJECT_SOURCE_DIR}/test/kata_fizzbuzz.cpp)
+set(TEST_SRC_FILES ${SRC_FILES}
+### START KATA TO TEST ###
+${PROJECT_SOURCE_DIR}/test/kata_fizzbuzz.cpp
+${PROJECT_SOURCE_DIR}/test/kata_bank_account.cpp
+### END KATA TO TEST ###
+)
 
 add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
 add_dependencies(${PROJECT_TEST_NAME} googletest)
