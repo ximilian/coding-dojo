@@ -17,7 +17,7 @@ execute_process(
 )
 
 execute_process(
-  COMMAND ctest -VV
+  COMMAND ctest -VV --gtest_color=yes
   WORKING_DIRECTORY ${build_dir}
   RESULT_VARIABLE test_result
 )

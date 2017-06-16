@@ -9,6 +9,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
     add_definitions(-Wall -ansi -Wno-deprecated -pthread)
 endif()
 
+# Adding some color to test output
+set(ENV{GTEST_COLOR} "1")
+
 #-------------------
 # Module sources
 #-------------------
@@ -36,6 +39,7 @@ set(TEST_SRC_FILES ${SRC_FILES}
 ### START KATA TO TEST ###
 ${PROJECT_SOURCE_DIR}/test/kata_fizzbuzz.cpp
 ${PROJECT_SOURCE_DIR}/test/kata_bank_account.cpp
+${PROJECT_SOURCE_DIR}/test/kata_tennis.cpp
 ### END KATA TO TEST ###
 )
 
