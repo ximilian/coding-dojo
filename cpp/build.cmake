@@ -13,3 +13,13 @@ execute_process(
   COMMAND ${CMAKE_COMMAND} --build .
   WORKING_DIRECTORY ${build_dir}
 )
+
+execute_process(
+  COMMAND ctest -VV --gtest_color=yes
+  WORKING_DIRECTORY ${build_dir}
+  RESULT_VARIABLE test_result
+)
+
+if(${test_result})
+  message(FATAL_ERROR "test failed")
+endif()
