@@ -1,48 +1,28 @@
-cmake_minimum_required(VERSION 2.8.8)
-set(PROJECT_NAME_STR coding-dojo)
-set (CMAKE_CXX_STANDARD 11)
-project(${PROJECT_NAME_STR} C CXX)
+cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 
-find_package(Threads REQUIRED)
+set(PROJECT_NAME coding_dojo_playground)
+project(${PROJECT_NAME} CXX)
 
-if(CMAKE_COMPILER_IS_GNUCXX)
-    add_definitions(-Wall -ansi -Wno-deprecated -pthread)
+# place binaries and libraries according to GNU standards
+include(GNUInstallDirs)
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_LIBDIR})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_BINDIR})
+
+# we use this to get code coverage
+if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fprofile-arcs -ftest-coverage")
 endif()
 
-#-------------------
-# Module sources
-#-------------------
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+add_subdirectory(src)
 
-#-------------------
-# set common include folder for module
-#-------------------
-set(COMMON_INCLUDES ${PROJECT_SOURCE_DIR}/include)
-set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
+# Setting Test environment
+include(cmake/googletest.cmake)
+fetch_googletest(
+    ${PROJECT_SOURCE_DIR}/cmake
+    ${PROJECT_BINARY_DIR}/googletest
+    )
 
-add_subdirectory(${EXT_PROJECTS_DIR}/gtest)
-
-#-------------------
-# Test
-#-------------------
 enable_testing()
-set(PROJECT_TEST_NAME ${PROJECT_NAME_STR}_test)
-include_directories(${GTEST_INCLUDE_DIRS} ${COMMON_INCLUDES})
-
-# Uncomment this line to include all test automatically
-# file(GLOB TEST_SRC_FILES ${PROJECT_SOURCE_DIR}/test/*.cpp)
-# Otherwise add them below
-set(TEST_SRC_FILES ${SRC_FILES} ${PROJECT_SOURCE_DIR}/test/kata_fizzbuzz.cpp)
-
-add_executable(${PROJECT_TEST_NAME} ${TEST_SRC_FILES})
-add_dependencies(${PROJECT_TEST_NAME} googletest)
-
-
-target_link_libraries(${PROJECT_TEST_NAME}
-        ${GTEST_LIBS_DIR}/libgtest.a
-        ${GTEST_LIBS_DIR}/libgtest_main.a
-        )
-
-target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
-
-add_test(test1 ${PROJECT_TEST_NAME})
+set(PROJECT_TEST_NAME ut_${PROJECT_NAME})
+add_subdirectory(test)

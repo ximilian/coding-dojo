@@ -1,4 +1,4 @@
-#include "fizzbuzz.h"
+#include "kata/fizzbuzz.h"
 #include "gtest/gtest.h"
 
 TEST(fizzbuzz_test, test_first)
